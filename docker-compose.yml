@@ -34,9 +34,7 @@ services:
   eureka-service:
     build:
       context: ./eureka-service
-      dockerfile: ../docker/Dockerfile.jar
-      args:
-        JAR_FILE: target/eureka-service-0.0.1-SNAPSHOT.jar
+      dockerfile: ../docker/Dockerfile.spring-boot
     image: chili-eureka-service:local
     container_name: chili-eureka-service
     restart: unless-stopped
@@ -52,9 +50,7 @@ services:
   auth-service:
     build:
       context: ./auth-service
-      dockerfile: ../docker/Dockerfile.jar
-      args:
-        JAR_FILE: target/auth-service-0.0.1-SNAPSHOT.jar
+      dockerfile: ../docker/Dockerfile.spring-boot
     image: chili-auth-service:local
     container_name: chili-auth-service
     restart: unless-stopped
@@ -82,9 +78,7 @@ services:
   soil-service:
     build:
       context: ./soil-service
-      dockerfile: ../docker/Dockerfile.jar
-      args:
-        JAR_FILE: target/soil-service-0.0.1-SNAPSHOT.jar
+      dockerfile: ../docker/Dockerfile.spring-boot
     image: chili-soil-service:local
     container_name: chili-soil-service
     restart: unless-stopped
@@ -112,9 +106,7 @@ services:
   control-service:
     build:
       context: ./control-service
-      dockerfile: ../docker/Dockerfile.jar
-      args:
-        JAR_FILE: target/control-service-0.0.1-SNAPSHOT.jar
+      dockerfile: ../docker/Dockerfile.spring-boot
     image: chili-control-service:local
     container_name: chili-control-service
     restart: unless-stopped
@@ -136,9 +128,7 @@ services:
   temperature-service:
     build:
       context: ./temperature-service
-      dockerfile: ../docker/Dockerfile.jar
-      args:
-        JAR_FILE: target/temperature-service-0.0.1-SNAPSHOT.jar
+      dockerfile: ../docker/Dockerfile.spring-boot
     image: chili-temperature-service:local
     container_name: chili-temperature-service
     restart: unless-stopped
@@ -166,9 +156,7 @@ services:
   api-gateway:
     build:
       context: ./api-gateway
-      dockerfile: ../docker/Dockerfile.jar
-      args:
-        JAR_FILE: target/api-gateway-0.0.1-SNAPSHOT.jar
+      dockerfile: ../docker/Dockerfile.spring-boot
     image: chili-api-gateway:local
     container_name: chili-api-gateway
     restart: unless-stopped

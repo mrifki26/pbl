@@ -1,11 +1,11 @@
 # Environment and secrets
-# .env
-# .env.*
+.env
+.env.*
 !.env.example
 
 # Maven / Java build output
-# target/
-# */target/
+target/
+*/target/
 
 # Flutter / Dart build output
 chili_track/build/
