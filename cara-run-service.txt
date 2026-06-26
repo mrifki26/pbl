@@ -1,0 +1,98 @@
+URUTAN MENJALANKAN PROJECT CHILITRACK
+
+1. Pastikan kebutuhan dasar sudah siap:
+   - Docker Desktop sudah berjalan.
+   - Java 17 dan Maven tersedia jika ingin build service manual.
+   - Flutter SDK tersedia jika ingin menjalankan aplikasi Flutter.
+
+2. Build file JAR untuk setiap microservice Spring Boot:
+
+   cd eureka-service
+   .\mvnw.cmd clean package -DskipTests
+   cd ..
+
+   cd api-gateway
+   .\mvnw.cmd clean package -DskipTests
+   cd ..
+
+   cd auth-service
+   .\mvnw.cmd clean package -DskipTests
+   cd ..
+
+   cd soil-service
+   .\mvnw.cmd clean package -DskipTests
+   cd ..
+
+   cd control-service
+   .\mvnw.cmd clean package -DskipTests
+   cd ..
+
+   cd temperature-service
+   .\mvnw.cmd clean package -DskipTests
+   cd ..
+
+3. Jalankan semua container service:
+
+   docker compose up -d --build
+
+4. Cek status container:
+
+   docker compose ps
+
+5. Lihat log service jika diperlukan:
+
+   docker compose logs -f
+
+6. Akses service:
+
+   MySQL                  : localhost:3307
+   phpMyAdmin             : http://localhost:8080
+   Eureka Dashboard       : http://localhost:8761
+   API Gateway            : http://localhost:8085
+   Auth Service           : http://localhost:8084
+   Soil Service           : http://localhost:8081
+   Control Service        : http://localhost:8082
+   Temperature Service    : http://localhost:8083
+   Prometheus             : http://localhost:9090
+   Grafana                : http://localhost:3000
+
+   Login Grafana:
+   username: admin
+   password: admin
+
+7. Cek endpoint metrics Prometheus dari service:
+
+   http://localhost:8084/actuator/prometheus
+   http://localhost:8081/actuator/prometheus
+   http://localhost:8082/actuator/prometheus
+   http://localhost:8083/actuator/prometheus
+   http://localhost:8761/actuator/prometheus
+   http://localhost:8085/actuator/prometheus
+
+8. Jalankan aplikasi Flutter di Chrome:
+
+   cd chili_track
+   flutter run -d chrome
+
+9. Jalankan aplikasi Flutter di Android USB:
+
+   powershell -ExecutionPolicy Bypass -File .\android-usb-reverse.ps1
+   cd chili_track
+   C:\sdk\flutter\bin\flutter.bat run -d 102752537K010542
+
+10. Stop container:
+
+   docker compose stop
+
+11. Stop dan hapus container:
+
+   docker compose down
+
+Catatan:
+- Prometheus otomatis scrape semua service lewat file docker/prometheus.yml.
+- Grafana otomatis memakai datasource Prometheus dari provisioning.
+- Eureka menampilkan service yang terdaftar di http://localhost:8761.
+- API Gateway menjadi pintu masuk utama aplikasi di http://localhost:8085.
+- Akun aplikasi contoh:
+  username: asep
+  password: 12345678

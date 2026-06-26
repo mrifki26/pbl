@@ -1,0 +1,104 @@
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: chili-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: chili_root_password
+      MYSQL_DATABASE: chili_track
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -p$${MYSQL_ROOT_PASSWORD} --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  phpmyadmin:
+    image: phpmyadmin:5.2
+    container_name: chili-phpmyadmin
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      UPLOAD_LIMIT: 64M
+    ports:
+      - "8080:80"
+
+  auth-service:
+    build:
+      context: ./auth-service
+      dockerfile: ../docker/Dockerfile.jar
+      args:
+        JAR_FILE: target/auth-service-0.0.1-SNAPSHOT.jar
+    image: chili-auth-service:local
+    container_name: chili-auth-service
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/chili_track?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: chili_root_password
+    ports:
+      - "8084:8084"
+
+  soil-service:
+    build:
+      context: ./soil-service
+      dockerfile: ../docker/Dockerfile.jar
+      args:
+        JAR_FILE: target/soil-service-0.0.1-SNAPSHOT.jar
+    image: chili-soil-service:local
+    container_name: chili-soil-service
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/chili_track?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: chili_root_password
+    ports:
+      - "8081:8081"
+
+  control-service:
+    build:
+      context: ./control-service
+      dockerfile: ../docker/Dockerfile.jar
+      args:
+        JAR_FILE: target/control-service-0.0.1-SNAPSHOT.jar
+    image: chili-control-service:local
+    container_name: chili-control-service
+    restart: unless-stopped
+    ports:
+      - "8082:8082"
+
+  temperature-service:
+    build:
+      context: ./temperature-service
+      dockerfile: ../docker/Dockerfile.jar
+      args:
+        JAR_FILE: target/temperature-service-0.0.1-SNAPSHOT.jar
+    image: chili-temperature-service:local
+    container_name: chili-temperature-service
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/chili_track?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: chili_root_password
+    ports:
+      - "8083:8083"
+
+volumes:
+  mysql_data:

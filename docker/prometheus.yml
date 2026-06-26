@@ -1,0 +1,34 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: "chili-eureka-service"
+    metrics_path: "/actuator/prometheus"
+    static_configs:
+      - targets: ["eureka-service:8761"]
+
+  - job_name: "chili-api-gateway"
+    metrics_path: "/actuator/prometheus"
+    static_configs:
+      - targets: ["api-gateway:8085"]
+
+  - job_name: "chili-auth-service"
+    metrics_path: "/actuator/prometheus"
+    static_configs:
+      - targets: ["auth-service:8084"]
+
+  - job_name: "chili-soil-service"
+    metrics_path: "/actuator/prometheus"
+    static_configs:
+      - targets: ["soil-service:8081"]
+
+  - job_name: "chili-control-service"
+    metrics_path: "/actuator/prometheus"
+    static_configs:
+      - targets: ["control-service:8082"]
+
+  - job_name: "chili-temperature-service"
+    metrics_path: "/actuator/prometheus"
+    static_configs:
+      - targets: ["temperature-service:8083"]

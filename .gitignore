@@ -1,0 +1,23 @@
+# Environment and secrets
+# .env
+# .env.*
+!.env.example
+
+# Maven / Java build output
+# target/
+# */target/
+
+# Flutter / Dart build output
+chili_track/build/
+chili_track/.dart_tool/
+chili_track/.flutter-plugins
+chili_track/.flutter-plugins-dependencies
+chili_track/.packages
+
+# IDE and OS local files
+.idea/
+*.iml
+*.log
+Thumbs.db
+ehthumbs.db
+Desktop.ini
