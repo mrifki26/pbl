@@ -11,6 +11,7 @@ class ControlPage extends StatefulWidget {
 
 class _ControlPageState extends State<ControlPage> {
   late Future<_PumpDashboardData> _future;
+  bool _isChangingPump = false;
 
   @override
   void initState() {
@@ -42,7 +43,10 @@ class _ControlPageState extends State<ControlPage> {
   }
 
   Future<void> _setPump(bool pumpOn) async {
+    if (_isChangingPump) return;
+
     final messenger = ScaffoldMessenger.of(context);
+    setState(() => _isChangingPump = true);
 
     try {
       if (pumpOn) {
@@ -50,12 +54,18 @@ class _ControlPageState extends State<ControlPage> {
       } else {
         await ApiService.wateringOff();
       }
-      await _refresh();
+
+      if (!mounted) return;
+      setState(() => _future = _loadData());
     } catch (_) {
       if (!mounted) return;
       messenger.showSnackBar(
         const SnackBar(content: Text("Gagal mengubah status pompa")),
       );
+    } finally {
+      if (mounted) {
+        setState(() => _isChangingPump = false);
+      }
     }
   }
 
@@ -97,7 +107,11 @@ class _ControlPageState extends State<ControlPage> {
                     style: TextStyle(color: Color(0xFF7A8190), fontSize: 14),
                   ),
                   const SizedBox(height: 22),
-                  _StatusCard(pumpOn: pumpOn, onChanged: _setPump),
+                  _StatusCard(
+                    pumpOn: pumpOn,
+                    isChanging: _isChangingPump,
+                    onChanged: _setPump,
+                  ),
                   const SizedBox(height: 18),
                   _SectionHeader(
                     title: "Perangkat Pompa",
@@ -141,9 +155,14 @@ class _PumpDashboardData {
 }
 
 class _StatusCard extends StatelessWidget {
-  const _StatusCard({required this.pumpOn, required this.onChanged});
+  const _StatusCard({
+    required this.pumpOn,
+    required this.isChanging,
+    required this.onChanged,
+  });
 
   final bool pumpOn;
+  final bool isChanging;
   final Future<void> Function(bool value) onChanged;
 
   @override
@@ -201,7 +220,7 @@ class _StatusCard extends StatelessWidget {
             activeTrackColor: Colors.white38,
             inactiveThumbColor: Colors.white,
             inactiveTrackColor: Colors.white38,
-            onChanged: onChanged,
+            onChanged: isChanging ? null : onChanged,
           ),
         ],
       ),
