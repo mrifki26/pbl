@@ -11,6 +11,7 @@ class ControlPage extends StatefulWidget {
 
 class _ControlPageState extends State<ControlPage> {
   late Future<_PumpDashboardData> _future;
+  _PumpDashboardData? _currentData;
   bool _isChangingPump = false;
 
   @override
@@ -38,8 +39,9 @@ class _ControlPageState extends State<ControlPage> {
   }
 
   Future<void> _refresh() async {
-    setState(() => _future = _loadData());
-    await _future;
+    final nextFuture = _loadData();
+    setState(() => _future = nextFuture);
+    _currentData = await nextFuture;
   }
 
   Future<void> _setPump(bool pumpOn) async {
@@ -49,14 +51,27 @@ class _ControlPageState extends State<ControlPage> {
     setState(() => _isChangingPump = true);
 
     try {
-      if (pumpOn) {
-        await ApiService.wateringOn();
-      } else {
-        await ApiService.wateringOff();
-      }
+      final status = pumpOn
+          ? await ApiService.wateringOn()
+          : await ApiService.wateringOff();
 
       if (!mounted) return;
-      setState(() => _future = _loadData());
+      final currentData = _currentData;
+      if (currentData != null) {
+        final optimisticData = currentData.copyWith(status: status);
+        setState(() {
+          _currentData = optimisticData;
+          _future = Future.value(optimisticData);
+        });
+      }
+
+      final nextFuture = _loadData();
+      setState(() => _future = nextFuture);
+      nextFuture.then((freshData) {
+        if (mounted) {
+          setState(() => _currentData = freshData);
+        }
+      });
     } catch (_) {
       if (!mounted) return;
       messenger.showSnackBar(
@@ -86,6 +101,7 @@ class _ControlPageState extends State<ControlPage> {
             }
 
             final data = snapshot.data!;
+            _currentData = data;
             final pumpOn = data.status["status"] == true;
 
             return RefreshIndicator(
@@ -152,6 +168,18 @@ class _PumpDashboardData {
   final Map<String, dynamic> status;
   final List<Map<String, dynamic>> devices;
   final List<Map<String, dynamic>> history;
+
+  _PumpDashboardData copyWith({
+    Map<String, dynamic>? status,
+    List<Map<String, dynamic>>? devices,
+    List<Map<String, dynamic>>? history,
+  }) {
+    return _PumpDashboardData(
+      status: status ?? this.status,
+      devices: devices ?? this.devices,
+      history: history ?? this.history,
+    );
+  }
 }
 
 class _StatusCard extends StatelessWidget {

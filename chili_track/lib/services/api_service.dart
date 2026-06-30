@@ -43,28 +43,27 @@ class ApiService {
 
   // ================= CONTROL ON =================
 
-  static Future wateringOn() async {
-    final res = await http.post(
-      Uri.parse("${ApiConfig.controlUrl}/on"),
-      headers: await _authHeaders(),
-    ).timeout(ApiConfig.requestTimeout);
-
-    if (res.statusCode != 200) {
-      throw Exception("Failed to turn ON");
-    }
+  static Future<Map<String, dynamic>> wateringOn() {
+    return setWateringStatus(true);
   }
 
   // ================= CONTROL OFF =================
 
-  static Future wateringOff() async {
+  static Future<Map<String, dynamic>> wateringOff() {
+    return setWateringStatus(false);
+  }
+
+  static Future<Map<String, dynamic>> setWateringStatus(bool pumpOn) async {
     final res = await http.post(
-      Uri.parse("${ApiConfig.controlUrl}/off"),
+      Uri.parse("${ApiConfig.controlUrl}/${pumpOn ? "on" : "off"}"),
       headers: await _authHeaders(),
     ).timeout(ApiConfig.requestTimeout);
 
-    if (res.statusCode != 200) {
-      throw Exception("Failed to turn OFF");
+    if (res.statusCode == 200) {
+      return jsonDecode(res.body);
     }
+
+    throw Exception("Failed to turn ${pumpOn ? "ON" : "OFF"}");
   }
 
   // ================= STATUS =================
