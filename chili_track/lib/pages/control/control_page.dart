@@ -50,38 +50,42 @@ class _ControlPageState extends State<ControlPage> {
     final messenger = ScaffoldMessenger.of(context);
     setState(() => _isChangingPump = true);
 
+    Map<String, dynamic> status;
     try {
-      final status = pumpOn
+      status = pumpOn
           ? await ApiService.wateringOn()
           : await ApiService.wateringOff();
-
-      if (!mounted) return;
-      final currentData = _currentData;
-      if (currentData != null) {
-        final optimisticData = currentData.copyWith(status: status);
-        setState(() {
-          _currentData = optimisticData;
-          _future = Future.value(optimisticData);
-        });
-      }
-
-      final nextFuture = _loadData();
-      setState(() => _future = nextFuture);
-      nextFuture.then((freshData) {
-        if (mounted) {
-          setState(() => _currentData = freshData);
-        }
-      });
-    } catch (_) {
+    } catch (error) {
       if (!mounted) return;
       messenger.showSnackBar(
-        const SnackBar(content: Text("Gagal mengubah status pompa")),
+        SnackBar(content: Text("Gagal mengubah status pompa: $error")),
       );
-    } finally {
-      if (mounted) {
-        setState(() => _isChangingPump = false);
-      }
+      setState(() => _isChangingPump = false);
+      return;
     }
+
+    if (!mounted) return;
+    final currentData = _currentData;
+    if (currentData != null) {
+      final optimisticData = currentData.copyWith(status: status);
+      setState(() {
+        _currentData = optimisticData;
+        _future = Future.value(optimisticData);
+        _isChangingPump = false;
+      });
+    } else {
+      setState(() => _isChangingPump = false);
+    }
+
+    final nextFuture = _loadData();
+    setState(() => _future = nextFuture);
+    nextFuture.then((freshData) {
+      if (mounted) {
+        setState(() => _currentData = freshData);
+      }
+    }).catchError((_) {
+      // The control command already succeeded; keep the returned status visible.
+    });
   }
 
   @override
