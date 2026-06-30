@@ -57,7 +57,7 @@ Wajib diganti untuk production:
 Contoh:
 
 ```text
-GATEWAY_CORS_ALLOWED_ORIGIN_PATTERNS=http://34.231.237.42:*,http://34.231.237.42:8085
+GATEWAY_CORS_ALLOWED_ORIGIN_PATTERNS=http://34.231.237.42:*,http://34.231.237.42:8085,http://localhost:*,http://127.0.0.1:*
 JWT_SECRET=isi-dengan-random-secret-panjang-minimal-32-karakter
 ```
 

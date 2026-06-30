@@ -183,7 +183,7 @@ services:
         condition: service_healthy
     environment:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:-http://eureka-service:8761/eureka/}
-      GATEWAY_CORS_ALLOWED_ORIGIN_PATTERNS: ${GATEWAY_CORS_ALLOWED_ORIGIN_PATTERNS:-http://34.231.237.42:*,http://34.231.237.42:8085}
+      GATEWAY_CORS_ALLOWED_ORIGIN_PATTERNS: ${GATEWAY_CORS_ALLOWED_ORIGIN_PATTERNS:-http://34.231.237.42:*,http://34.231.237.42:8085,http://localhost:*,http://127.0.0.1:*}
     ports:
       - "${API_GATEWAY_HOST_PORT:-8085}:8085"
     healthcheck:

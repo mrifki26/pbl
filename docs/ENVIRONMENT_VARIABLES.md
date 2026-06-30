@@ -50,12 +50,12 @@ http://eureka-service:8761/eureka/
 
 | Variable | Fungsi | Contoh |
 | --- | --- | --- |
-| `GATEWAY_CORS_ALLOWED_ORIGIN_PATTERNS` | Origin yang diizinkan oleh CORS gateway | `http://34.231.237.42:*,http://34.231.237.42:8085` |
+| `GATEWAY_CORS_ALLOWED_ORIGIN_PATTERNS` | Origin yang diizinkan oleh CORS gateway | `http://34.231.237.42:*,http://34.231.237.42:8085,http://localhost:*,http://127.0.0.1:*` |
 
 Untuk development, gateway memiliki default:
 
 ```text
-http://34.231.237.42:*,http://34.231.237.42:8085
+http://34.231.237.42:*,http://34.231.237.42:8085,http://localhost:*,http://127.0.0.1:*
 ```
 
 Untuk production, gunakan domain asli.
