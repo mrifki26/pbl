@@ -112,7 +112,7 @@ Pada deployment AWS EC2, semua traffic publik harus melalui HTTPS. Rekomendasi:
 
 - Nginx sebagai reverse proxy ke API Gateway port `8085`.
 - TLS certificate dari Let's Encrypt.
-- Flutter production menggunakan `https://domain-saya.com` sebagai `API_BASE_URL`.
+- Flutter production menggunakan `http://34.231.237.42:8085` sebagai `API_BASE_URL`.
 - Jangan expose port internal service ke publik kecuali diperlukan untuk administrasi terbatas.
 
 ## Rekomendasi Security Production

@@ -2,4 +2,4 @@ sudo docker compose up -d --builld
 docker ps
 
 buka grafana, prometheusm, dll
-http://ip_ec2:port
+http://34.231.237.42:port

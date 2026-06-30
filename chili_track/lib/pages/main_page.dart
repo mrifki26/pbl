@@ -3,6 +3,7 @@ import '../core/constants/colors.dart';
 import '../services/notification_service.dart';
 import 'dashboard/dashboard_page.dart';
 import 'analytics/analytics_page.dart';
+import 'control/control_page.dart';
 import 'notification/notification_page.dart';
 import 'profile/profile_page.dart';
 
@@ -19,6 +20,7 @@ class _MainPageState extends State<MainPage> {
   final pages = [
     const DashboardPage(),
     const AnalyticsPage(),
+    const ControlPage(),
     const NotificationPage(),
     const ProfilePage(),
   ];
@@ -55,6 +57,10 @@ class _MainPageState extends State<MainPage> {
               const BottomNavigationBarItem(
                 icon: Icon(Icons.show_chart_rounded),
                 label: "Statistik",
+              ),
+              const BottomNavigationBarItem(
+                icon: Icon(Icons.water_drop_outlined),
+                label: "Data pompa",
               ),
               BottomNavigationBarItem(
                 icon: _NavBadge(

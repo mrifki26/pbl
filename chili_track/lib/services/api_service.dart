@@ -4,6 +4,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../core/config/api_config.dart';
 
 class ApiService {
+  static Future<Map<String, String>> _authHeaders() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString("token");
+
+    return {
+      if (token != null && token.isNotEmpty) "Authorization": "Bearer $token",
+    };
+  }
+
   // ================= SOIL =================
 
   static Future<Map<String, dynamic>> getLatestSoil() async {
@@ -35,13 +44,9 @@ class ApiService {
   // ================= CONTROL ON =================
 
   static Future wateringOn() async {
-    final prefs = await SharedPreferences.getInstance();
-
-    String? token = prefs.getString("token");
-
     final res = await http.post(
       Uri.parse("${ApiConfig.controlUrl}/on"),
-      headers: {"Authorization": "Bearer $token"},
+      headers: await _authHeaders(),
     ).timeout(ApiConfig.requestTimeout);
 
     if (res.statusCode != 200) {
@@ -52,13 +57,9 @@ class ApiService {
   // ================= CONTROL OFF =================
 
   static Future wateringOff() async {
-    final prefs = await SharedPreferences.getInstance();
-
-    String? token = prefs.getString("token");
-
     final res = await http.post(
       Uri.parse("${ApiConfig.controlUrl}/off"),
-      headers: {"Authorization": "Bearer $token"},
+      headers: await _authHeaders(),
     ).timeout(ApiConfig.requestTimeout);
 
     if (res.statusCode != 200) {
@@ -69,13 +70,9 @@ class ApiService {
   // ================= STATUS =================
 
   static Future<Map<String, dynamic>> getStatus() async {
-    final prefs = await SharedPreferences.getInstance();
-
-    String? token = prefs.getString("token");
-
     final res = await http.get(
       Uri.parse("${ApiConfig.controlUrl}/status"),
-      headers: {"Authorization": "Bearer $token"},
+      headers: await _authHeaders(),
     ).timeout(ApiConfig.requestTimeout);
 
     if (res.statusCode == 200) {
@@ -83,5 +80,31 @@ class ApiService {
     }
 
     throw Exception("Failed to load status");
+  }
+
+  static Future<List<dynamic>> getPumpDevices() async {
+    final res = await http.get(
+      Uri.parse("${ApiConfig.controlUrl}/devices"),
+      headers: await _authHeaders(),
+    ).timeout(ApiConfig.requestTimeout);
+
+    if (res.statusCode == 200) {
+      return jsonDecode(res.body);
+    }
+
+    throw Exception("Failed to load pump devices");
+  }
+
+  static Future<List<dynamic>> getPumpHistory() async {
+    final res = await http.get(
+      Uri.parse("${ApiConfig.controlUrl}/history"),
+      headers: await _authHeaders(),
+    ).timeout(ApiConfig.requestTimeout);
+
+    if (res.statusCode == 200) {
+      return jsonDecode(res.body);
+    }
+
+    throw Exception("Failed to load pump history");
   }
 }

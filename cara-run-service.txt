@@ -45,16 +45,16 @@ URUTAN MENJALANKAN PROJECT CHILITRACK
 
 6. Akses service:
 
-   MySQL                  : localhost:3307
-   phpMyAdmin             : http://localhost:8080
-   Eureka Dashboard       : http://localhost:8761
-   API Gateway            : http://localhost:8085
-   Auth Service           : http://localhost:8084
-   Soil Service           : http://localhost:8081
-   Control Service        : http://localhost:8082
-   Temperature Service    : http://localhost:8083
-   Prometheus             : http://localhost:9090
-   Grafana                : http://localhost:3000
+   MySQL                  : 34.231.237.42:3307
+   phpMyAdmin             : http://34.231.237.42:8080
+   Eureka Dashboard       : http://34.231.237.42:8761
+   API Gateway            : http://34.231.237.42:8085
+   Auth Service           : http://34.231.237.42:8084
+   Soil Service           : http://34.231.237.42:8081
+   Control Service        : http://34.231.237.42:8082
+   Temperature Service    : http://34.231.237.42:8083
+   Prometheus             : http://34.231.237.42:9090
+   Grafana                : http://34.231.237.42:3000
 
    Login Grafana:
    username: admin
@@ -62,12 +62,12 @@ URUTAN MENJALANKAN PROJECT CHILITRACK
 
 7. Cek endpoint metrics Prometheus dari service:
 
-   http://localhost:8084/actuator/prometheus
-   http://localhost:8081/actuator/prometheus
-   http://localhost:8082/actuator/prometheus
-   http://localhost:8083/actuator/prometheus
-   http://localhost:8761/actuator/prometheus
-   http://localhost:8085/actuator/prometheus
+   http://34.231.237.42:8084/actuator/prometheus
+   http://34.231.237.42:8081/actuator/prometheus
+   http://34.231.237.42:8082/actuator/prometheus
+   http://34.231.237.42:8083/actuator/prometheus
+   http://34.231.237.42:8761/actuator/prometheus
+   http://34.231.237.42:8085/actuator/prometheus
 
 8. Jalankan aplikasi Flutter di Chrome:
 
@@ -91,8 +91,8 @@ URUTAN MENJALANKAN PROJECT CHILITRACK
 Catatan:
 - Prometheus otomatis scrape semua service lewat file docker/prometheus.yml.
 - Grafana otomatis memakai datasource Prometheus dari provisioning.
-- Eureka menampilkan service yang terdaftar di http://localhost:8761.
-- API Gateway menjadi pintu masuk utama aplikasi di http://localhost:8085.
+- Eureka menampilkan service yang terdaftar di http://34.231.237.42:8761.
+- API Gateway menjadi pintu masuk utama aplikasi di http://34.231.237.42:8085.
 - Akun aplikasi contoh:
   username: asep
   password: 12345678

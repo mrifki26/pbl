@@ -57,7 +57,7 @@ Wajib diganti untuk production:
 Contoh:
 
 ```text
-GATEWAY_CORS_ALLOWED_ORIGIN_PATTERNS=https://domain-saya.com
+GATEWAY_CORS_ALLOWED_ORIGIN_PATTERNS=http://34.231.237.42:*,http://34.231.237.42:8085
 JWT_SECRET=isi-dengan-random-secret-panjang-minimal-32-karakter
 ```
 
@@ -102,22 +102,22 @@ docker compose logs -f
 Endpoint lokal pada server:
 
 ```text
-Eureka:      http://localhost:8761
-Gateway:     http://localhost:8085/actuator/health
-Auth:        http://localhost:8084/actuator/health
-Soil:        http://localhost:8081/actuator/health
-Control:     http://localhost:8082/actuator/health
-Temperature: http://localhost:8083/actuator/health
-Prometheus:  http://localhost:9090
-Grafana:     http://localhost:3000
+Eureka:      http://34.231.237.42:8761
+Gateway:     http://34.231.237.42:8085/actuator/health
+Auth:        http://34.231.237.42:8084/actuator/health
+Soil:        http://34.231.237.42:8081/actuator/health
+Control:     http://34.231.237.42:8082/actuator/health
+Temperature: http://34.231.237.42:8083/actuator/health
+Prometheus:  http://34.231.237.42:9090
+Grafana:     http://34.231.237.42:3000
 ```
 
 Verifikasi routing gateway:
 
 ```bash
-curl http://localhost:8085/actuator/health
-curl http://localhost:8085/api/soil/latest
-curl http://localhost:8085/api/temperature/latest
+curl http://34.231.237.42:8085/actuator/health
+curl http://34.231.237.42:8085/api/soil/latest
+curl http://34.231.237.42:8085/api/temperature/latest
 ```
 
 ## 8. Nginx Reverse Proxy
@@ -164,7 +164,7 @@ sudo certbot --nginx -d domain-saya.com
 Setelah HTTPS aktif, build Flutter dengan:
 
 ```bash
-flutter build apk --dart-define=API_BASE_URL=https://domain-saya.com
+flutter build apk --dart-define=API_BASE_URL=http://34.231.237.42:8085
 ```
 
 ## 10. Monitoring
@@ -172,13 +172,13 @@ flutter build apk --dart-define=API_BASE_URL=https://domain-saya.com
 Prometheus:
 
 ```text
-http://localhost:9090
+http://34.231.237.42:9090
 ```
 
 Grafana:
 
 ```text
-http://localhost:3000
+http://34.231.237.42:3000
 ```
 
 Grafana menggunakan datasource Prometheus dari provisioning di folder `docker/grafana/provisioning`.

@@ -3,13 +3,13 @@
 Base URL development melalui API Gateway:
 
 ```text
-http://localhost:8085
+http://34.231.237.42:8085
 ```
 
 Base URL production:
 
 ```text
-https://domain-saya.com
+http://34.231.237.42:8085
 ```
 
 Header untuk endpoint yang membutuhkan JWT:

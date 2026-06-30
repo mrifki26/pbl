@@ -62,7 +62,7 @@ Detail fungsi setiap variable ada di `ENVIRONMENT_VARIABLES.md`.
 6. Jalankan `docker compose up -d --build`.
 7. Pasang Nginx sebagai reverse proxy ke API Gateway port `8085`.
 8. Aktifkan HTTPS.
-9. Build Flutter dengan `--dart-define=API_BASE_URL=https://domain-saya.com`.
+9. Build Flutter dengan `--dart-define=API_BASE_URL=http://34.231.237.42:8085`.
 10. Batasi akses publik hanya ke port yang diperlukan.
 11. Siapkan backup database.
 12. Verifikasi Prometheus dan Grafana.

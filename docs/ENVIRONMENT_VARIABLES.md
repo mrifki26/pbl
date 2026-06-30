@@ -43,19 +43,19 @@ Catatan production:
 Saat menjalankan service lokal tanpa Docker, default properties mengarah ke:
 
 ```text
-http://localhost:8761/eureka/
+http://eureka-service:8761/eureka/
 ```
 
 ## API Gateway
 
 | Variable | Fungsi | Contoh |
 | --- | --- | --- |
-| `GATEWAY_CORS_ALLOWED_ORIGIN_PATTERNS` | Origin yang diizinkan oleh CORS gateway | `https://your-domain.example` |
+| `GATEWAY_CORS_ALLOWED_ORIGIN_PATTERNS` | Origin yang diizinkan oleh CORS gateway | `http://34.231.237.42:*,http://34.231.237.42:8085` |
 
 Untuk development, gateway memiliki default:
 
 ```text
-http://localhost:*,http://127.0.0.1:*
+http://34.231.237.42:*,http://34.231.237.42:8085
 ```
 
 Untuk production, gunakan domain asli.
@@ -98,10 +98,10 @@ Flutter memakai compile-time variable:
 
 | Variable | Fungsi | Default Development |
 | --- | --- | --- |
-| `API_BASE_URL` | Base URL API Gateway untuk aplikasi Flutter | `http://localhost:8085` |
+| `API_BASE_URL` | Base URL API Gateway untuk aplikasi Flutter | `http://34.231.237.42:8085` |
 
 Contoh build production:
 
 ```bash
-flutter build apk --dart-define=API_BASE_URL=https://domain-saya.com
+flutter build apk --dart-define=API_BASE_URL=http://34.231.237.42:8085
 ```
