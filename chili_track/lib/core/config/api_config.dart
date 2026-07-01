@@ -1,7 +1,7 @@
 class ApiConfig {
   static const baseUrl = String.fromEnvironment(
     "API_BASE_URL",
-    defaultValue: "http://34.231.237.42:8085",
+    defaultValue: "http://chilitrack.online:8085",
   );
 
   static const requestTimeout = Duration(seconds: 10);

@@ -68,13 +68,13 @@ API Gateway berjalan di port `8085` dan merutekan request ke service melalui Eur
 Flutter menggunakan Gateway sebagai base URL. Default development:
 
 ```text
-http://34.231.237.42:8085
+http://chilitrack.online:8085
 ```
 
 Production dapat diganti saat build Flutter:
 
 ```powershell
-C:\sdk\flutter\bin\flutter.bat build apk --dart-define=API_BASE_URL=http://34.231.237.42:8085
+C:\sdk\flutter\bin\flutter.bat build apk --dart-define=API_BASE_URL=http://chilitrack.online:8085
 ```
 
 ## Cara Menjalankan Backend
@@ -129,7 +129,7 @@ Flutter APK production:
 
 ```powershell
 cd chili_track
-C:\sdk\flutter\bin\flutter.bat build apk --dart-define=API_BASE_URL=http://34.231.237.42:8085
+C:\sdk\flutter\bin\flutter.bat build apk --dart-define=API_BASE_URL=http://chilitrack.online:8085
 ```
 
 ## Monitoring

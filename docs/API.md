@@ -3,13 +3,13 @@
 Base URL development melalui API Gateway:
 
 ```text
-http://34.231.237.42:8085
+http://chilitrack.online:8085
 ```
 
 Base URL production:
 
 ```text
-http://34.231.237.42:8085
+http://chilitrack.online:8085
 ```
 
 Header untuk endpoint yang membutuhkan JWT:

@@ -6,6 +6,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-chili_root_password}
       MYSQL_DATABASE: ${MYSQL_DATABASE:-chili_track}
+      TZ: ${APP_TIME_ZONE:-UTC}
     ports:
       - "${MYSQL_HOST_PORT:-3307}:3306"
     volumes:
@@ -29,6 +30,7 @@ services:
       PMA_HOST: mysql
       PMA_PORT: 3306
       UPLOAD_LIMIT: ${PHPMYADMIN_UPLOAD_LIMIT:-64M}
+      TZ: ${APP_TIME_ZONE:-UTC}
     ports:
       - "${PHPMYADMIN_HOST_PORT:-8080}:80"
 
@@ -39,6 +41,9 @@ services:
     image: chili-eureka-service:local
     container_name: chili-eureka-service
     restart: unless-stopped
+    environment:
+      TZ: ${APP_TIME_ZONE:-UTC}
+      JAVA_TOOL_OPTIONS: -Duser.timezone=${APP_TIME_ZONE:-UTC}
     ports:
       - "${EUREKA_HOST_PORT:-8761}:8761"
     healthcheck:
@@ -61,6 +66,8 @@ services:
       mysql:
         condition: service_healthy
     environment:
+      TZ: ${APP_TIME_ZONE:-UTC}
+      JAVA_TOOL_OPTIONS: -Duser.timezone=${APP_TIME_ZONE:-UTC}
       SPRING_DATASOURCE_URL: ${AUTH_DATASOURCE_URL:-jdbc:mysql://mysql:3306/chili_auth?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC}
       SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME:-root}
       SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD:-chili_root_password}
@@ -91,6 +98,8 @@ services:
       mysql:
         condition: service_healthy
     environment:
+      TZ: ${APP_TIME_ZONE:-UTC}
+      JAVA_TOOL_OPTIONS: -Duser.timezone=${APP_TIME_ZONE:-UTC}
       SPRING_DATASOURCE_URL: ${CHILI_TRACK_DATASOURCE_URL:-jdbc:mysql://mysql:3306/chili_track?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC}
       SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME:-root}
       SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD:-chili_root_password}
@@ -119,6 +128,8 @@ services:
       mysql:
         condition: service_healthy
     environment:
+      TZ: ${APP_TIME_ZONE:-UTC}
+      JAVA_TOOL_OPTIONS: -Duser.timezone=${APP_TIME_ZONE:-UTC}
       SPRING_DATASOURCE_URL: ${CONTROL_DATASOURCE_URL:-jdbc:mysql://mysql:3306/chili_control?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC}
       SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME:-root}
       SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD:-chili_root_password}
@@ -148,6 +159,8 @@ services:
       mysql:
         condition: service_healthy
     environment:
+      TZ: ${APP_TIME_ZONE:-UTC}
+      JAVA_TOOL_OPTIONS: -Duser.timezone=${APP_TIME_ZONE:-UTC}
       SPRING_DATASOURCE_URL: ${CHILI_TRACK_DATASOURCE_URL:-jdbc:mysql://mysql:3306/chili_track?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC}
       SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME:-root}
       SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD:-chili_root_password}
@@ -182,8 +195,10 @@ services:
       temperature-service:
         condition: service_healthy
     environment:
+      TZ: ${APP_TIME_ZONE:-UTC}
+      JAVA_TOOL_OPTIONS: -Duser.timezone=${APP_TIME_ZONE:-UTC}
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:-http://eureka-service:8761/eureka/}
-      GATEWAY_CORS_ALLOWED_ORIGIN_PATTERNS: ${GATEWAY_CORS_ALLOWED_ORIGIN_PATTERNS:-http://34.231.237.42:*,http://34.231.237.42:8085,http://localhost:*,http://127.0.0.1:*}
+      GATEWAY_CORS_ALLOWED_ORIGIN_PATTERNS: ${GATEWAY_CORS_ALLOWED_ORIGIN_PATTERNS:-http://chilitrack.online,http://chilitrack.online:8085,http://www.chilitrack.online,http://www.chilitrack.online:8085,https://chilitrack.online,https://www.chilitrack.online,http://34.231.237.42:*,http://localhost:*,http://127.0.0.1:*}
     ports:
       - "${API_GATEWAY_HOST_PORT:-8085}:8085"
     healthcheck:
@@ -212,6 +227,8 @@ services:
         condition: service_healthy
     command:
       - "--config.file=/etc/prometheus/prometheus.yml"
+    environment:
+      TZ: ${APP_TIME_ZONE:-UTC}
     volumes:
       - ./docker/prometheus.yml:/etc/prometheus/prometheus.yml:ro
       - prometheus_data:/prometheus
@@ -234,6 +251,7 @@ services:
     environment:
       GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER:-admin}
       GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:-admin}
+      TZ: ${APP_TIME_ZONE:-UTC}
     volumes:
       - grafana_data:/var/lib/grafana
       - ./docker/grafana/provisioning:/etc/grafana/provisioning:ro

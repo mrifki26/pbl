@@ -501,5 +501,18 @@ String _text(dynamic value, String fallback) {
 String _formatDate(dynamic value) {
   final text = _text(value, "-");
   if (text == "-") return text;
-  return text.replaceFirst("T", " ");
+
+  final hasTimezone = RegExp(r'(Z|[+-]\d{2}:?\d{2})$').hasMatch(text);
+  final parsed = DateTime.tryParse(hasTimezone ? text : "${text}Z");
+  if (parsed == null) return text.replaceFirst("T", " ");
+
+  final time = parsed.toUtc().add(const Duration(hours: 7));
+  final year = time.year.toString().padLeft(4, "0");
+  final month = time.month.toString().padLeft(2, "0");
+  final day = time.day.toString().padLeft(2, "0");
+  final hour = time.hour.toString().padLeft(2, "0");
+  final minute = time.minute.toString().padLeft(2, "0");
+  final second = time.second.toString().padLeft(2, "0");
+
+  return "$year-$month-$day $hour:$minute:$second WIB";
 }

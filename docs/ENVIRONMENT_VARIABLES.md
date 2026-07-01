@@ -50,12 +50,12 @@ http://eureka-service:8761/eureka/
 
 | Variable | Fungsi | Contoh |
 | --- | --- | --- |
-| `GATEWAY_CORS_ALLOWED_ORIGIN_PATTERNS` | Origin yang diizinkan oleh CORS gateway | `http://34.231.237.42:*,http://34.231.237.42:8085,http://localhost:*,http://127.0.0.1:*` |
+| `GATEWAY_CORS_ALLOWED_ORIGIN_PATTERNS` | Origin yang diizinkan oleh CORS gateway | `http://chilitrack.online,http://chilitrack.online:8085,http://www.chilitrack.online,http://www.chilitrack.online:8085,https://chilitrack.online,https://www.chilitrack.online,http://34.231.237.42:*,http://localhost:*,http://127.0.0.1:*` |
 
 Untuk development, gateway memiliki default:
 
 ```text
-http://34.231.237.42:*,http://34.231.237.42:8085,http://localhost:*,http://127.0.0.1:*
+http://chilitrack.online,http://chilitrack.online:8085,http://www.chilitrack.online,http://www.chilitrack.online:8085,https://chilitrack.online,https://www.chilitrack.online,http://34.231.237.42:*,http://localhost:*,http://127.0.0.1:*
 ```
 
 Untuk production, gunakan domain asli.
@@ -98,10 +98,10 @@ Flutter memakai compile-time variable:
 
 | Variable | Fungsi | Default Development |
 | --- | --- | --- |
-| `API_BASE_URL` | Base URL API Gateway untuk aplikasi Flutter | `http://34.231.237.42:8085` |
+| `API_BASE_URL` | Base URL API Gateway untuk aplikasi Flutter | `http://chilitrack.online:8085` |
 
 Contoh build production:
 
 ```bash
-flutter build apk --dart-define=API_BASE_URL=http://34.231.237.42:8085
+flutter build apk --dart-define=API_BASE_URL=http://chilitrack.online:8085
 ```

@@ -11,7 +11,7 @@ public class CorsConfig implements WebMvcConfigurer {
 	private final String[] allowedOriginPatterns;
 
 	public CorsConfig(
-			@Value("${gateway.cors.allowed-origin-patterns:http://34.231.237.42:*,http://34.231.237.42:8085,http://localhost:*,http://127.0.0.1:*}")
+			@Value("${gateway.cors.allowed-origin-patterns:http://chilitrack.online,http://chilitrack.online:8085,http://www.chilitrack.online,http://www.chilitrack.online:8085,https://chilitrack.online,https://www.chilitrack.online,http://34.231.237.42:*,http://localhost:*,http://127.0.0.1:*}")
 			String allowedOriginPatterns
 	) {
 		this.allowedOriginPatterns = allowedOriginPatterns.split(",");

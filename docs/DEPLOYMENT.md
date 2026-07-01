@@ -57,7 +57,7 @@ Wajib diganti untuk production:
 Contoh:
 
 ```text
-GATEWAY_CORS_ALLOWED_ORIGIN_PATTERNS=http://34.231.237.42:*,http://34.231.237.42:8085,http://localhost:*,http://127.0.0.1:*
+GATEWAY_CORS_ALLOWED_ORIGIN_PATTERNS=http://chilitrack.online,http://chilitrack.online:8085,http://www.chilitrack.online,http://www.chilitrack.online:8085,https://chilitrack.online,https://www.chilitrack.online,http://34.231.237.42:*,http://localhost:*,http://127.0.0.1:*
 JWT_SECRET=isi-dengan-random-secret-panjang-minimal-32-karakter
 ```
 
@@ -103,7 +103,7 @@ Endpoint lokal pada server:
 
 ```text
 Eureka:      http://34.231.237.42:8761
-Gateway:     http://34.231.237.42:8085/actuator/health
+Gateway:     http://chilitrack.online:8085/actuator/health
 Auth:        http://34.231.237.42:8084/actuator/health
 Soil:        http://34.231.237.42:8081/actuator/health
 Control:     http://34.231.237.42:8082/actuator/health
@@ -115,9 +115,9 @@ Grafana:     http://34.231.237.42:3000
 Verifikasi routing gateway:
 
 ```bash
-curl http://34.231.237.42:8085/actuator/health
-curl http://34.231.237.42:8085/api/soil/latest
-curl http://34.231.237.42:8085/api/temperature/latest
+curl http://chilitrack.online:8085/actuator/health
+curl http://chilitrack.online:8085/api/soil/latest
+curl http://chilitrack.online:8085/api/temperature/latest
 ```
 
 ## 8. Nginx Reverse Proxy
@@ -164,7 +164,7 @@ sudo certbot --nginx -d domain-saya.com
 Setelah HTTPS aktif, build Flutter dengan:
 
 ```bash
-flutter build apk --dart-define=API_BASE_URL=http://34.231.237.42:8085
+flutter build apk --dart-define=API_BASE_URL=http://chilitrack.online:8085
 ```
 
 ## 10. Monitoring
