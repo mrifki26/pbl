@@ -2,6 +2,7 @@ package com.chilitrack.control.controller;
 
 import com.chilitrack.control.dto.ControlResponse;
 import com.chilitrack.control.dto.PumpDeviceRequest;
+import com.chilitrack.control.dto.PumpStatusReportRequest;
 import com.chilitrack.control.entity.PumpControlHistory;
 import com.chilitrack.control.entity.PumpDevice;
 import com.chilitrack.control.service.ControlService;
@@ -52,5 +53,10 @@ public class ControlController {
     @PostMapping("/devices")
     public PumpDevice saveDevice(@RequestBody PumpDeviceRequest request) {
         return service.saveDevice(request);
+    }
+
+    @PostMapping("/device-status")
+    public ControlResponse reportDeviceStatus(@RequestBody PumpStatusReportRequest request) {
+        return service.reportDeviceStatus(request);
     }
 }

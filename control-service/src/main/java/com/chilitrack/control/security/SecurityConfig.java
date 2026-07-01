@@ -32,6 +32,7 @@ public class SecurityConfig {
                 (request, response, authException) -> response.sendError(HttpServletResponse.SC_UNAUTHORIZED)
             ))
             .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/api/control/device-status").permitAll()
                 .requestMatchers("/api/control/**").authenticated()
                 .requestMatchers("/actuator/health", "/actuator/info", "/actuator/prometheus").permitAll()
                 .anyRequest().denyAll()

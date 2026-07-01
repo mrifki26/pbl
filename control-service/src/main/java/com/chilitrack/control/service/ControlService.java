@@ -2,6 +2,7 @@ package com.chilitrack.control.service;
 
 import com.chilitrack.control.dto.ControlResponse;
 import com.chilitrack.control.dto.PumpDeviceRequest;
+import com.chilitrack.control.dto.PumpStatusReportRequest;
 import com.chilitrack.control.entity.PumpControlHistory;
 import com.chilitrack.control.entity.PumpDevice;
 import com.chilitrack.control.entity.PumpStatus;
@@ -78,6 +79,40 @@ public class ControlService {
         return deviceRepository.save(device);
     }
 
+    @Transactional
+    public ControlResponse reportDeviceStatus(PumpStatusReportRequest request) {
+        String deviceCode = request == null
+                ? DEFAULT_DEVICE_CODE
+                : cleanOrDefault(request.deviceCode, DEFAULT_DEVICE_CODE);
+        boolean pumpOn = request != null && Boolean.TRUE.equals(request.pumpOn);
+        String source = request == null ? "AUTO" : cleanOrDefault(request.source, "AUTO");
+
+        ensureDevice(deviceCode);
+
+        PumpStatus currentStatus = statusRepository.findById(deviceCode).orElse(null);
+        boolean changed = currentStatus == null || currentStatus.isPumpOn() != pumpOn;
+
+        if (currentStatus == null) {
+            currentStatus = new PumpStatus(deviceCode, false);
+        }
+
+        currentStatus.setPumpOn(pumpOn);
+        statusRepository.save(currentStatus);
+
+        String message = pumpOn ? "Pump ON (" + source + ")" : "Pump OFF (" + source + ")";
+
+        if (changed) {
+            historyRepository.save(new PumpControlHistory(
+                    deviceCode,
+                    pumpOn ? "ON" : "OFF",
+                    pumpOn,
+                    message
+            ));
+        }
+
+        return new ControlResponse(message, pumpOn);
+    }
+
     private ControlResponse setPumpStatus(boolean pumpOn) {
         ensureDefaultDevice();
 
@@ -104,9 +139,13 @@ public class ControlService {
     }
 
     private void ensureDefaultDevice() {
-        deviceRepository.findByDeviceCode(DEFAULT_DEVICE_CODE)
+        ensureDevice(DEFAULT_DEVICE_CODE);
+    }
+
+    private void ensureDevice(String deviceCode) {
+        deviceRepository.findByDeviceCode(deviceCode)
                 .orElseGet(() -> deviceRepository.save(new PumpDevice(
-                        DEFAULT_DEVICE_CODE,
+                        deviceCode,
                         "Main Water Pump",
                         "Chili Track Field"
                 )));
